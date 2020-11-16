@@ -1,0 +1,15 @@
+.container{
+
+}
+.url-view-wrapper{
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.url-viewers-list{
+    flex: auto;
+    overflow: auto;
+    position: relative;
+}
