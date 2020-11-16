@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Loader from "../../components/loader/loader";
+import ReactShadowRoot from 'react-shadow-root';
+
 import './url-viewer.css';
 
 const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
@@ -22,17 +24,23 @@ const UrlViewer = ({url}) => {
         });
     }
 
+    const removeScripts = (htmlText) => {
+        return htmlText.replace(SCRIPT_REGEX, '');
+    }
+
     useEffect(() => {
-        fetchPage(url);
+        if(url) fetchPage(url);
     }, [url]);
 
     return(
         <>
-            <div className="url-viewer shadow mb-5 bg-white rounded">
+            <div className="url-viewer border shadow mb-5 bg-white rounded">
                 <Loader loading={loading} />
-                {!!htmlDoc && <div
-                    dangerouslySetInnerHTML={{ __html: htmlDoc.replace(SCRIPT_REGEX, '')}} />
-                }
+                <div className="position-relative">
+                    <ReactShadowRoot>
+                        {!!htmlDoc && <div dangerouslySetInnerHTML={{ __html: removeScripts(htmlDoc)}} />}
+                    </ReactShadowRoot>
+                </div>
             </div>
         </>
     )
